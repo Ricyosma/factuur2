@@ -54,11 +54,11 @@ class CartController extends AbstractController
     /**
      * @Route("/add/{id}", name="cart_add")
      */
-    public function addAction($id)
+    public function addAction($id, ProductRepository $productRepository): Response
     {
         // fetch the cart
         $em = $this->getDoctrine()->getManager();
-        $product = $em->getRepository('Product')->find($id);
+        $product = $productRepository->find($id);
         //print_r($product->getId()); die;
         $session = $this->get('request_stack')->getCurrentRequest()->getSession();
         $cart = $session->get('cart', array());
@@ -91,6 +91,8 @@ class CartController extends AbstractController
 
         }
     }
+
+
     /**
      * @Route("/checkout", name="checkout")
      */
@@ -142,5 +144,34 @@ class CartController extends AbstractController
 
         $session->clear();
         return $this->redirectToRoute('homepage');
+    }
+    /**
+     * @Route("/remove/{id}", name="cart_remove")
+     */
+    public function removeAction($id)
+    {
+        // check the cart
+        $session = $this->get('request_stack')->getCurrentRequest()->getSession();
+        $cart = $session->get('cart', array());
+
+        // if it doesn't exist redirect to cart index page. end
+        if(!$cart[$id]) { $this->redirect( $this->generateUrl('cart') ); }
+
+        // check if the $id already exists in it.
+        if( isset($cart[$id]) ) {
+            $cart[$id] = $cart[$id] - 1;
+            if ($cart[$id] < 1) {
+                unset($cart[$id]);
+            }
+        } else {
+            return $this->redirect( $this->generateUrl('cart') );
+        }
+
+        $session->set('cart', $cart);
+
+        //echo('<pre>');
+        //print_r($cart); echo ('</pre>');die();
+
+        return $this->redirect( $this->generateUrl('cart') );
     }
   }
