@@ -44,7 +44,8 @@
                                         {% set total = total + (row.prijs * item) %}
                                     {% endif %}
                                 {% endfor %}
-
+                                <td><a href="{{ path('cart_remove', {'id': key }) }}">
+                                        <button class="btn btn-changer">Remove</button></a></td>
 
                             </tr>
                         {% endfor %}
