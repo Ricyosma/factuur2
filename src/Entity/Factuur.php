@@ -49,10 +49,7 @@ class Factuur
      */
     private $factuurregels;
 
-    public function __construct()
-    {
-        $this->factuurregels = new ArrayCollection();
-    }
+
 
     public function getId(): ?int
     {
@@ -149,4 +146,5 @@ class Factuur
 
         return $this;
     }
+
 }

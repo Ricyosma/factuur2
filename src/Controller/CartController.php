@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CartController extends AbstractController
 {
     /**
-     * @Route("/", name="cart")
+     * @Route("/", name="_view")
      */
     public function index(ProductRepository $productRepository): Response
     {
@@ -52,7 +52,7 @@ class CartController extends AbstractController
         }
     }
     /**
-     * @Route("/add/{id}", name="cart_add")
+     * @Route("/add/{id}", name="_add")
      */
     public function addAction($id, ProductRepository $productRepository): Response
     {
@@ -87,14 +87,14 @@ class CartController extends AbstractController
             $session->set('cart', $cart);
             //echo('<pre>');
             //print_r($cart); echo ('</pre>');die();
-            return $this->redirect($this->generateUrl('cart'));
+            return $this->redirect($this->generateUrl('cart_view'));
 
         }
     }
 
 
     /**
-     * @Route("/checkout", name="checkout")
+     * @Route("/checkout", name="_checkout")
      */
     public function checkoutAction()
     {
@@ -146,7 +146,7 @@ class CartController extends AbstractController
         return $this->redirectToRoute('homepage');
     }
     /**
-     * @Route("/remove/{id}", name="cart_remove")
+     * @Route("/remove/{id}", name="_remove")
      */
     public function removeAction($id)
     {
